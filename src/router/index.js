@@ -25,17 +25,18 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+//为路由对象，添加 beforeEach 导航守卫
 //挂载路由导航守卫,to表示将要访问的路径，from表示从哪里来，next是下一个要做的操作
 router.beforeEach((to, from, next) => {
+  //// 如果用户访问的登录页，直接放行
   if (to.path === '/login') {
     return next();
 
   }
-
-  //获取token
+  // 从 sessionStorage 中获取到 保存的 token 值
   const tokenStr = window.sessionStorage.getItem('token');
-
-  if (!tokenStr) {//没有登录 没有token 直接返回登录页
+  // 没有token，强制跳转到登录页
+  if (!tokenStr) {
     return next('/login');
   }
   next();//放行
