@@ -15,8 +15,20 @@ const routes = [
     redirect: 'login'
   },
   {
+    //home的主路由
     path: "/home",
-    component: () => import("@/views/Home.vue")
+    component: () => import("@/views/Home.vue"),
+    // 子路由配置
+    children: [
+      {
+        path: "/home",
+        redirect: "/users"
+      },
+      {
+        path: "/users",
+        component: () => import("@/components/users/Users.vue")
+      }
+    ]
   }
 ]
 
