@@ -84,7 +84,7 @@
         <el-pagination @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="queryParams.pagenum"
-                       :page-sizes="[1, 2, 4, 6]"
+                       :page-sizes="[10, 20, 30, 40,50]"
                        :page-size="queryParams.pagesize"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="total">
@@ -177,7 +177,7 @@ export default {
         // 查询的条件
         query: "",
         pagenum: 1,//当前页码
-        pagesize: 2//每页显示记录数
+        pagesize: 10//每页显示记录数
       },
       //保存请求回来的用户列表数据
       userList: [],
@@ -201,9 +201,9 @@ export default {
         username: [
           { required: true, message: '请输入用户名称', trigger: 'blur' },
           {
-            min: 3,
+            min: 2,
             max: 10,
-            message: '用户名在3~10个字符之间',
+            message: '用户名在2~10个字符之间',
             trigger: 'blur'
           }
         ],
@@ -303,10 +303,21 @@ export default {
       this.getUserList();
     },
     async stateChange (id, state) {
-      const { data: res } = await this.$http.put(`users/${id}/state/${state}`)
-      if (res.meta.status !== 200) {
-        this.$message.error("修改状态失败");
-      }
+      this.$confirm('您确定要修改该用户的状态吗?', '提示', {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      }).then(async () => {
+        const { data: res } = await this.$http.put(`users/${id}/state/${state}`)
+        if (res.meta.status !== 200) {
+          this.$message.error("修改状态失败");
+        } else {
+          this.$message.success("修改状态成功");
+        }
+      }).catch(() => {
+        this.$message.info("操作已取消");
+        this.getUserList();
+      })
+
     },
     // 显示编辑对话框
     async showUpdateForm (id) {
