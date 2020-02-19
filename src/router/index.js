@@ -22,11 +22,23 @@ const routes = [
     children: [
       {
         path: "/home",
-        redirect: "/users"
+        redirect: "/welcome"
+      },
+      {
+        path: "/welcome",
+        component: () => import("@/views/Welcome.vue")
       },
       {
         path: "/users",
         component: () => import("@/components/users/Users.vue")
+      },
+      {
+        path: "/rights",
+        component: () => import("@/components/rights/Rights.vue")
+      },
+      {
+        path: "/roles",
+        component: () => import("@/components/roles/Roles.vue")
       }
     ]
   }
